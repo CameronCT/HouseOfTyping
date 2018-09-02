@@ -1,0 +1,10 @@
+<div class="container section">
+    <div class="newsContainer p-4">
+        <h4 class="newsHeadline">
+            {{ Newsletter.Title }}
+            <span class="text-muted float-right">{{ JSDate(Newsletter.DateTime) | date:'MMMM d, yyyy' }}</span>
+        </h4>
+        <hr>
+        <div ks-nl2br ks-bbcode class="newsBody" ng-bind-html="Newsletter.Body"></div>
+    </div>
+</div>

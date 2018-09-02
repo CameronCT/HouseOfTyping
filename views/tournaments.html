@@ -1,0 +1,52 @@
+<div class="container section">
+
+    <h3>Upcoming Tournaments</h3>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Name</th>
+                <th class="text-center">Players</th>
+                <th>When</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="t in list | orderBy:['Start'] " ng-class="{ 
+                'bg-success text-white'    :    t.Start < timeNow
+            }" ng-if="t.End > timeNow">
+                <td style="width: 70%;">
+                    <span ng-if="!t.Official" class="badge badge-pill badge-info">Not Official</span>
+                    <a ng-class="{ 'a-black': t.Start > timeNow, 'a-white': t.Start < timeNow }" href="#!/tournament/{{ t.ID }}">{{ t.Name }}</a>
+                </td>
+                <td class="text-center">{{ t.Participants | number }}</td>
+                <td ng-if="t.Start > timeNow">
+                    <a data-toggle="tooltip" data-placement="top" title="{{ JSDate(t.Start) | date:'MMMM d, yyyy h:mm:ss a Z' }}">
+                        {{ t.Start | relativeDate }}
+                    </a>
+                </td>
+                <td ng-if="t.Start < timeNow">
+                    Live!
+                </td> 
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 class="pt-3">Finished Tournaments</h3>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Name</th>
+                <th class="text-center">Players</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="t in list | orderBy:['End'] " ng-if="t.End < timeNow">
+                <td style="width: 80%;">
+                    <span ng-if="!t.Official" class="badge badge-pill badge-info">Not Official</span>
+                    <a class="a-black" href="#!/tournament/{{ t.ID }}">{{ t.Name }}</a>
+                </td>
+                <td class="text-center">{{ t.Participants | number }}</td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>

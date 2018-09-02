@@ -1,0 +1,23 @@
+<div class="container section">
+    <div class="pb-5">
+        <h3 class="float-left">Profiles</h3>
+        <div class="float-right">
+            <input class="form-control" ng-model="searchProfiles" placeholder="Search" />
+        </div>
+    </div>
+    <div ng-if="Profiles" class="row">
+        <div class="col-sm-2 pb-4" ng-repeat="p in Profiles | filter:searchProfiles">
+            <a class="a-black" href="#!/profile/{{ p.Username }}">
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title text-center">{{ p.Username }}</h4>
+                        <img class="mx-auto d-block img-fluid img-auto img-border rounded mb-3" src="{{ p.Avatar }}" />
+                        <p class="card-text text-center">{{ JSDate(p.DateTime) | date:'MMMM d, yyyy' }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div ng-if="Profiles.length > limit" uib-pager total-items="ProfilesData.length" items-per-page="limit" ng-model="page"></div>
+    </div>
+    <h2 ng-if="!Profiles" class="text-center pt-5">No profiles found!</h2>
+</div>

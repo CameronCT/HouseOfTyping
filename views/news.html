@@ -1,0 +1,23 @@
+<div class="container section">
+    <h3>News</h3>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th class="text-center">#</th>
+                <th>Title</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="n in News">
+                <td>{{ n.ID }}</td>
+                <td style="width: 80%;">
+                    <a href="#!/news/{{ n.ID }}" class="a-black">
+                        {{ n.Title }}
+                    </a>
+                </td>
+                <td>{{ JSDate(n.DateTime) | date:'MMMM d, yyyy' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

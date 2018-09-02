@@ -1,0 +1,49 @@
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+    <div class="container">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#!/">
+            <img class="img-fluid" src="assets/img/logo.png?v=5" alt="Logo" />
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav mr-auto">
+                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Community</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown02">
+                        <a class="dropdown-item" href="#!/about">About</a>
+                        <a class="dropdown-item" href="https://goo.gl/forms/oG3sTRkQLglyhKY52">Text Submissions</a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/news">News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/profiles">Profiles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/tournaments">Tournaments</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Affiliates</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        <a class="dropdown-item" href="http://typeracerdata.com/">TypeRacerData</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div ng-if="$root.config.notice.msg !== null">
+    <div class="bg-{{ $root.config.notice.type }} text-white text-center">
+        {{ $root.config.notice.msg }}
+    </div>
+</div>

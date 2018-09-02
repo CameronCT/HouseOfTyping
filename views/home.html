@@ -1,0 +1,51 @@
+<div class="jumbotron">
+    <div class="container pb-4">
+        <h1 class="display-3"><a class="a-black" href="#!/tournaments/{{ latestTournament.ID }}" role="button">{{ latestTournament.Name }}</a></h1>
+        <div class="float-right pr-4 py-2">
+            Starts at {{ latestTournament.Start | date:'MMMM d, yyyy h:mm a Z' }}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="newsContainer p-4 mb-4" ng-repeat="n in News">
+                <h4 class="newsHeadline">
+                    {{ n.Title }}
+                    <span class="text-muted float-right">{{ JSDate(n.DateTime) | date:'MMMM d, yyyy' }}</span>
+                </h4>
+                <hr>
+                <div ks-nl2br ks-bbcode class="newsBody" ng-bind-html="n.Body"></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-1 bg-inverse text-white text-center mb-1"><h5 class="pt-1">Streams</h5></div>
+            <div ng-if="!Streams.Error" ng-repeat="s in Streams">
+                <a href="https://twitch.tv/{{ s.Name }}" class="streamRow">
+                    {{ s.Name }}
+                    <span class="float-right">
+                        <i class="fa fa-eye fa-lg"></i>
+                        {{ s.Viewers | number }}
+                    </span>
+                </a>
+                <hr class="hruler">
+            </div>
+            <h5 ng-if="Streams.Error" class="text-center text-muted pt-2">There are currently no streams!</h5>
+
+            <div class="mt-3 p-1 bg-inverse text-white text-center"><h5 class="pt-1">Advertisement</h5></div>
+            <div class="mx-auto d-block text-center py-3">
+                <!-- HoT - Sidebar -->
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3822393833826597"
+                    data-ad-slot="3467467117"
+                    data-ad-format="auto"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+        
+    </div>
+</div>

@@ -1,0 +1,161 @@
+<div class="container section">
+    <div ng-if="Tournament.Official == 0" class="alert alert-info" role="alert">
+        <i class="fa fa-exclamation-circle"></i> This tournament is <b>not</b> ran by {{ $root.config.name }}, so any issues should be held up with the original organizer found in the "Rules" section.
+    </div>
+    <div class="tournamentTitle">
+        <span class="h1-nopadding">{{ Tournament.Name }}</span>
+        <div ng-if="Tournament.Start > timeNow && Tournament.End > timeNow" class="float-right text-muted h5-nopadding pt-3">
+            Starts in {{ Tournament.Start | relativeDate }}
+        </div>
+        <div ng-if="Tournament.Start < timeNow && Tournament.End > timeNow" class="float-right text-muted h5-nopadding pt-3">
+            Ends in {{ Tournament.End | relativeDate }}
+        </div>
+        <div ng-if="Tournament.End < timeNow" class="float-right text-muted h5-nopadding pt-3">
+            Ended
+        </div>
+        <div ng-if="Tournament.Cache > timeNow" class="pl-1 text-muted">
+            Updating Results in {{ Tournament.Cache | relativeDate }}
+        </div>
+        <div ng-if="Tournament.Cache < timeNow" class="pl-1 text-muted">
+            Results updated, refresh this page!
+        </div>
+    </div>
+    <hr>
+    <div ng-if="!Tournament" class="col-md-12">
+        <div class="pt-5 text-center">
+            <i class="fa fa-spinner fa-spin font-spinner fa-fw pb-5"></i>
+            <h1 class="py-5">Loading</h1>
+        </div>  
+    </div>
+    <div class="row" ng-if="Tournament">
+        <!-- if Round Robin -->
+        <div ng-if="Tournament.Type == 0" class="col-md-8">
+            <table ng-if="Tournament.Participants" class="table">
+                <thead class="thead-inverse">
+                    <tr>   
+                        <th>#</th>
+                        <th>Name</th>
+                        <th class="text-center">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="p in Tournament.Participants track by $index">
+                        <td>{{ $index + 1 }}</td>
+                        <td><a class="a-black" href="#!/profile/{{ p.Username }}">
+                            <span ng-switch="$index + 1">
+                                <i ng-switch-when="1" class="fa fa-trophy fa-lg" style="color: #D9A441"></i>
+                                <i ng-switch-when="2" class="fa fa-trophy fa-lg" style="color: #CCC2C2"></i>
+                                <i ng-switch-when="3" class="fa fa-trophy fa-lg" style="color: #965A38"></i>
+                            </span>
+                            {{ p.Username }}</a>
+                        </td>
+                        <td class="text-center">
+                            {{ p.Score | number:2 }} <span class="text-muted">WPM</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 ng-if="!Tournament.Participants" class="text-center pt-5">
+                There are no participants!
+            </h3>
+        </div>
+
+        <!-- if Bracket -->
+        <div ng-if="Tournament.Type == 1 || Tournament.Type == 2" class="col-md-8">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active">Participants</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ Tournament.Bracket }}" >Bracket</a>
+                </li>
+            </ul>
+            
+            <table ng-if="Tournament.Participants" class="table">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="p in Tournament.Participants">
+                        <td><a class="a-black" href="#!/profile/{{ p.Username }}">{{ p.Username }}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 ng-if="!Tournament.Participants" class="text-center pt-5">
+                There are no participants!
+            </h3>
+
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <button ng-if="
+                Tournament.Type == 0 && Tournament.End > timeNow && !Tournament.Locked
+                || Tournament.Type == 1 && Tournament.Start > timeNow && !Tournament.Locked
+                || Tournament.Type == 2 && Tournament.Start > timeNow && !Tournament.Locked
+            " type="button" class="btn btn-primary mb-3 w100" data-toggle="modal" data-target="#participateModal">Sign Up!</button>
+            <div ng-if="
+                Tournament.End < timeNow
+                || Tournament.Type == 0 && Tournament.End > timeNow && Tournament.Locked
+                || Tournament.Type == 1 && Tournament.Start > timeNow
+                || Tournament.Type == 2 && Tournament.Start > timeNow
+            " class="text-center text-muted pb-3">
+                You may not participate in this tournament.
+            </div>
+            
+            <div class="p-1 bg-inverse text-white text-center mb-1"><h5 class="pt-1">Info</h5></div>
+            <div ng-if="Tournament.Info" class="mb-3">
+                <div ks-nl2br ks-bbcode ng-bind-html="Tournament.Info"></div>
+            </div>
+            <div ng-if="!Tournament.Info" class="mb-3">
+                <h4 class="text-center text-muted">
+                    To be announced
+                </h4>
+            </div>
+
+            <div ng-if="Tournament.Rules">
+                <div class="p-1 bg-inverse text-white text-center mb-1"><h5 class="pt-1">Rules</h5></div>
+                <div ng-if="Tournament.Rules" class="mb-3">
+                    <div ks-nl2br ks-bbcode ng-bind-html="Tournament.Rules"></div>
+                </div>
+            </div>
+
+            <div class="p-1 bg-inverse text-white text-center mb-1"><h5 class="pt-1">Type</h5></div>
+            <div ng-if="Tournament.Type == 0">
+                <h2 class="text-center">Round Robin</h2>
+            </div>
+            <div ng-if="Tournament.Type == 1">
+                <h2 class="text-center">Bracket</h2>
+            </div>
+            <div ng-if="Tournament.Type == 2">
+                <h2 class="text-center">Other</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-if="Tournament.Locked == 0" class="modal fade" id="participateModal" tabindex="-1" role="dialog" aria-labelledby="participateModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Participate in {{ Tournament.Name }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" name="participate" ng-submit="submitParticipate(post)">
+                <div class="modal-body">
+                    <label for="name">TypeRacer Username</label>
+                    <input type="text" class="form-control" ng-model="post.name" name="name" required focus />
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="participate_submit" value="1" />
+                    <input type="submit" class="btn btn-primary" value="Join!" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
